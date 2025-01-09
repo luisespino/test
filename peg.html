@@ -16,33 +16,27 @@
     monaco.languages.setMonarchTokensProvider('peg', {
       tokenizer: {
         root: [
-          // Palabras clave de PEG: reglas, literales, operaciones
+          // Reglas PEG: palabras clave y términos especiales
           [/\b(rule|optional|literal|and|not|choice|sequence|repeat|lookahead)\b/, 'keyword'],
           
-          // Operadores (e.g. & (lookahead), | (alternativa), ! (negación))
+          // Operadores de PEG (e.g. & (lookahead), | (alternativa), ! (negación), * (repetición))
           [/[&|!]/, 'operator'],
-          
-          // Repeticiones (*)
-          [/\*/ , 'operator.repeat'],
-          
-          // Alternativas (|) para elecciones
+          [/\*/, 'operator.repeat'],
           [/\|/, 'operator.choice'],
-          
-          // Lookahead
           [/\?/, 'operator.lookahead'],
           
           // Números (enteros o decimales)
           [/\b\d+\.\d*\b/, 'number'],
           [/\b\d+\b/, 'number'],
           
-          // Identificadores (nombres de reglas o variables)
+          // Identificadores: nombres de reglas o variables (combinación de letras, números y guiones bajos)
           [/[A-Za-z_][A-Za-z0-9_]*/, 'identifier'],
           
-          // Cadenas (comillas dobles o simples)
+          // Cadenas: puede ser con comillas dobles o simples
           [/"([^"\\]|\\.)*"/, 'string'],
           [/'([^'\\]|\\.)*'/, 'string'],
           
-          // Comentarios: simple o multilinea
+          // Comentarios en una línea: #
           [/^\s*#.*$/, 'comment'],
           
           // Espacios y tabulaciones
@@ -59,7 +53,7 @@ term = factor ( '*' factor | '/' factor )* ;
 factor = '(' expr ')' | number ;
 number = [0-9]+ ;`,
         language: 'peg',  // Usar PEG
-        theme: 'vs-dark', // Tema oscuro
+        theme: 'vs-light', // Tema oscuro
         automaticLayout: true, // Ajuste automático de layout
       });
     });
@@ -78,3 +72,4 @@ number = [0-9]+ ;`,
   <div id="editor"></div>
 </body>
 </html>
+
