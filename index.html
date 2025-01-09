@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monaco Editor with Fortran</title>
+
+  <!-- Cargar Monaco Editor a través de CDN y ES Modules -->
+  <script type="module">
+    import * as monaco from 'https://cdn.jsdelivr.net/npm/monaco-editor@0.50.0/+esm';
+    
+    // Registrar el lenguaje Fortran
+    monaco.languages.register({ id: 'fortran' });
+
+    // Definir la tokenización avanzada para Fortran
+    monaco.languages.setMonarchTokensProvider('fortran', {
+      tokenizer: {
+        root: [
+          // Palabras clave de control
+          [/\b(program|module|end|subroutine|function|if|else|elseif|do|enddo|then|return|contains|use)\b/, 'keyword'],
+          
+          // Tipos de datos
+          [/\b(integer|real|complex|logical|character|double|precision)\b/, 'type'],
+          
+          // Operadores
+          [/[+\-*/=<>^&|!]/, 'operator'],
+          
+          // Funciones incorporadas
+          [/\b(read|write|print|open|close|flush|allocate|deallocate|exit|pause)\b/, 'function'],
+          
+          // Números (decimales, enteros, científicos)
+          [/\b\d+\.\d*([eE][-+]?\d+)?\b/, 'number'],
+          [/\b\d+\b/, 'number'],
+          
+          // Identificadores (nombres de variables, funciones, etc.)
+          [/[A-Za-z_][A-Za-z0-9_]*/, 'identifier'],
+          
+          // Comentarios de una sola línea
+          [/!.*/, 'comment'],
+          
+          // Cadenas (comillas dobles)
+          [/"([^"\\]|\\.)*"/, 'string'],
+          
+          // Cadenas (comillas simples)
+          [/'([^'\\]|\\.)*'/, 'string'],
+          
+          // Espacios y tabulaciones
+          [/[ \t\r\n]+/, 'whitespace'],
+        ]
+      }
+    });
+
+    // Crear el Monaco Editor con Fortran como lenguaje
+    window.addEventListener('DOMContentLoaded', () => {
+      const editor = monaco.editor.create(document.getElementById('editor'), {
+        value: "program test\n  print *, 'Hello, Fortran!'\nend program test",
+        language: 'fortran',  // Usar Fortran
+        theme: 'vs-dark',     // Tema oscuro
+        automaticLayout: true // Ajuste automático de layout
+      });
+    });
+  </script>
+</head>
+<body>
+  <h1>Monaco Editor with Fortran</h1>
+  <div id="editor" style="width: 800px; height: 600px;"></div>
+</body>
+</html>
