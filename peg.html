@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monaco Editor with PEG</title>
+
+  <!-- Cargar Monaco Editor a través de CDN y ES Modules -->
+  <script type="module">
+    import * as monaco from 'https://cdn.jsdelivr.net/npm/monaco-editor@0.50.0/+esm';
+
+    // Registrar el lenguaje PEG
+    monaco.languages.register({ id: 'peg' });
+
+    // Definir la tokenización para PEG
+    monaco.languages.setMonarchTokensProvider('peg', {
+      tokenizer: {
+        root: [
+          // Palabras clave de PEG: reglas, literales, operaciones
+          [/\b(rule|optional|literal|and|not|choice|sequence|repeat|lookahead)\b/, 'keyword'],
+          
+          // Operadores (e.g. & (lookahead), | (alternativa), ! (negación))
+          [/[&|!]/, 'operator'],
+          
+          // Repeticiones (*)
+          [/\*/ , 'operator.repeat'],
+          
+          // Alternativas (|) para elecciones
+          [/\|/, 'operator.choice'],
+          
+          // Lookahead
+          [/\?/, 'operator.lookahead'],
+          
+          // Números (enteros o decimales)
+          [/\b\d+\.\d*\b/, 'number'],
+          [/\b\d+\b/, 'number'],
+          
+          // Identificadores (nombres de reglas o variables)
+          [/[A-Za-z_][A-Za-z0-9_]*/, 'identifier'],
+          
+          // Cadenas (comillas dobles o simples)
+          [/"([^"\\]|\\.)*"/, 'string'],
+          [/'([^'\\]|\\.)*'/, 'string'],
+          
+          // Comentarios: simple o multilinea
+          [/^\s*#.*$/, 'comment'],
+          
+          // Espacios y tabulaciones
+          [/[ \t\r\n]+/, 'whitespace'],
+        ]
+      }
+    });
+
+    // Crear el Monaco Editor con PEG como lenguaje
+  
